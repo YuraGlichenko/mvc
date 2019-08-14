@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<form enctype="multipart/form-data" action="/index/formUser" method="post">
+    <b>Логин: </b><br><input type="text" name="name"><br>
+    <b>Пароль: </b><br><input type="password" name="password"><br>
+
+    Прикрепить картинку:<br>
+    <input name="file" type="file" /><br>
+    <b>Описание: </b><br><input type="text" name="description"><br>
+    <b>Почта: </b><br><input type="text" name="email"><br>
+    <b>Возраст: </b><br><input type="number" name="age"><br>
+    Message:<br>
+    <textarea name="message" style="width: 250px; height: 100px;"></textarea><br>
+    <input type="submit" value="Send">
+</form>
+</body>
+</html>
