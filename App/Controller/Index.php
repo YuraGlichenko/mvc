@@ -6,21 +6,20 @@ use App\Model\File;
 use Base\Controller as BaseController;
 use App\Model\User;
 use Base\Image;
+use Base\Session;
 
 
 class Index extends BaseController
 {
-    public function indexAction()
-    {
-        if (isUserAuthorized()){
-
-        }
-    }
-
     public function indexUserAction()
     {
         $this->_render = false;
         $user = new User();
+
+        $userIdSession = $user->isUserAuthorized();
+        if (empty($userIdSession)) {
+            header('Location: register');
+        }
         $data = $_REQUEST;
         $image = new Image();
         if ($_FILES['photo']){
@@ -53,5 +52,8 @@ class Index extends BaseController
         $file->getFile();
     }
 
-
+    public function registerAction()
+    {
+        $this->needRender();
+    }
 }

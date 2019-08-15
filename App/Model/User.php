@@ -2,6 +2,7 @@
 namespace App\Model;
 
 use Base\Context;
+use Base\Session;
 
 class User
 {
@@ -13,7 +14,8 @@ class User
     private $_password;
     private $_description;
     private $_photo;
-    function passwordHash($password)
+
+    private function passwordHash($password)
     {
         $this->_password = $password;
         $this->_passwordHash = sha1('32fdfds/.s' . $password);
@@ -39,6 +41,13 @@ class User
         $id = $db->lastInsertId();
         $this->_id = $id;
         return true;
+    }
+
+    function isUserAuthorized()
+    {
+        $session = Session::instance();
+        $userId = $session->get('user_id');
+        return  $userId;
     }
 
     public function userInfo($email, $all = false)
