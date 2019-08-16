@@ -15,45 +15,68 @@ class Index extends BaseController
     {
         $this->_render = false;
         $user = new User();
-
-        $userIdSession = $user->isUserAuthorized();
-        if (empty($userIdSession)) {
-            header('Location: register');
-        }
         $data = $_REQUEST;
-        $image = new Image();
-        if ($_FILES['photo']){
-            $image->loadFile($_FILES);
-            $image->copyImage();
-            $data['photo'] = $image->getFilePath();
-        } else {
-            $data['photo'] = '';
-        }
-
         $user->loadUser($data);
-        $ret = $user->save();
+        $ret = $user->checkUser($user->getEmail());
         if ($ret) {
-            echo 'ok';
-            echo $user->getId();
+            Session::instance()->set('user_id',$ret['id']);
+            header('Location: formdata');
+            die();
+        } else {
+            $user->saveUserDb();
+            header('Location: formdata');
         }
-    }
-
-    public function getUserAction()
-    {
-        $user = new User();
-        $user->userInfo('fdghfdh', 1);
-        $this->view->userInfo = $user;
     }
 
     public function indexFileAction()
     {
-        $this->_render=false;
         $file = new File;
-        $file->getFile();
+        $files = $file->getFile();
+        $this->view->files = $files;
     }
 
     public function registerAction()
     {
-        $this->needRender();
+        $user = new User;
+        $userIdSession = $user->isUserAuthorized();
+        if (empty($userIdSession)) {
+            $this->needRender();
+        } else {
+            header('Location: formdata');
+            $this->_render = false;
+        }
     }
+
+    public function formdataAction()
+    {
+        $user = new User();
+        $sessionId = $user->isUserAuthorized();
+        echo $sessionId;
+        if (!$sessionId) {
+            header('Location: register');
+        }
+    }
+
+    public function dataAction()
+    {
+        $user = new User();
+        $sessionId = $user->isUserAuthorized();
+        echo $sessionId;
+        if (!$sessionId) {
+            header('Location: register');
+        }
+        $data['user_id'] = $sessionId;
+        $image = new Image();
+        if ($_FILES['file']){
+            $image->loadFile($_FILES);
+            $image->copyImage();
+            $data['data_path'] = $image->getFilePath();
+            $data['data_name'] = $image->getFileName();
+        } else {
+            $data['file'] = '';
+        }
+        $file = new File();
+        $file->saveDbFile($data);
+    }
+
 }

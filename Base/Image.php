@@ -27,10 +27,10 @@ class Image
 
     public function loadFile($dataFile)
     {
-        $this->_fileSize = $dataFile['photo']['size'];
-        $this->_fileType = $dataFile['photo']['type'];
-        $this->_fileName = $dataFile['photo']['name'];
-        $this->_fileTmp = $dataFile['photo']['tmp_name'];
+        $this->_fileSize = $dataFile['file']['size'];
+        $this->_fileType = $dataFile['file']['type'];
+        $this->_fileName = $dataFile['file']['name'];
+        $this->_fileTmp = $dataFile['file']['tmp_name'];
 
     }
 
@@ -40,5 +40,13 @@ class Image
     public function getFilePath()
     {
         return $this->_filePath;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFileName()
+    {
+        return $this->_fileName;
     }
 }

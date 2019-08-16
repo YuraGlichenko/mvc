@@ -1,0 +1,9 @@
+<?php
+/** @var App\Model\File[] $files */
+$files = $this->files;
+?>
+
+<? foreach ($files as $item): ?>
+<div>id user: <?=$item['user_id'] . ' files name: ' .$item['data_name'] ?></div>
+<?endforeach;?>
+
