@@ -21,7 +21,6 @@ class File
 
     public function saveDbFile($data)
     {
-        debug($data);
         $q = "INSERT INTO data (user_id, data_name, data_path) VALUES (:us_id, :data_name, :data_path)";
         $param = ['us_id' => $data['user_id'], 'data_name' => $data['data_name'], 'data_path' => $data['data_path']];
         $db = Context::i()->getDb();

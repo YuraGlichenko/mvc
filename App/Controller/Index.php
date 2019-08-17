@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Model\File;
+use Base\Context;
 use Base\Controller as BaseController;
 use App\Model\User;
 use Base\Image;
@@ -11,15 +12,39 @@ use Base\Session;
 
 class Index extends BaseController
 {
+    public function authAction(){
+        $session = Session::instance();
+        $user = new User();
+        $userData = $_REQUEST;
+        $user->loadUser($userData);
+        $ret = $user->checkUser(['email' => $user->getEmail(), 'password' => $user->getPasswordHash()]);
+        if ($ret) {
+            echo 'Авторизовались';
+            $session->set('user_id', $ret['id']);
+            header('Location: formdata');
+
+        }
+
+    }
+
+    public function getBySortUsersAction()
+    {
+        $user = new User();
+        $user->isUserAuthorized();
+        $allUsers= $user->getAllUsers();
+        $this->view->alluser = $allUsers;
+    }
+
     public function indexUserAction()
     {
+        $session = Session::instance();
         $this->_render = false;
-        $user = new User();
         $data = $_REQUEST;
+        $user = new User();
         $user->loadUser($data);
-        $ret = $user->checkUser($user->getEmail());
+        $ret = $user->checkUser(['email' => $user->getEmail(), 'password' => $user->getPasswordHash()]);
         if ($ret) {
-            Session::instance()->set('user_id',$ret['id']);
+            $session->set('user_id',$ret['id']);
             header('Location: formdata');
             die();
         } else {

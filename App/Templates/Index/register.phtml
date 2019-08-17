@@ -1,9 +1,19 @@
 
+
+Регистрация и Авторизация<br><br><br>
+
+Авторизация:<br><br>
+<form action="/index/Auth" method="post" enctype="multipart/form-data">
+    ЛОГИН: <input type="text" name="name">
+    Пароль: <input type="text" name="password"><br>
+    Почта: <input type="text" name="email"><br>
+    <input type="submit" value="Authorization" name="Auth">
+</form>
 Зарегистрироваться:<br><br>
 <form action="/index/indexUser" method="post" enctype="multipart/form-data">
     ЛОГИН: <input type="text" name="name">
     Пароль: <input type="text" name="password"><br>
     Почта: <input type="text" name="email"><br>
     Возраст: </b><br><input type="number" name="age"><br>
-    <input type="submit" value="Register">
+    <input type="submit" value="Register" name="Register">
 </form>

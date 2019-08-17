@@ -13,31 +13,46 @@ class User
     private $_passwordHash;
     private $_age;
     private $_password;
+    private $_passwordSec;
+
+    /**
+     * @return mixed
+     */
+    public function getPasswordHash()
+    {
+        return $this->_passwordHash;
+    }
 
     private function passwordHash($password)
     {
-        $this->_password = $password;
+        $this->_passwordSec = $password;
         $this->_passwordHash = sha1('32fdfds/.s' . $password);
     }
 
-    public function getAllUsers()
+    public function getAllUsers($sortByInc = false)
     {
         $user = new User();
         $id = $user->getId();
         $db = Context::i()->getDb();
-        $query = "select * FROM users";
+        $query = "SELECT `name`, age, CASE WHEN age > 18 THEN 'совершенолетний' WHEN age < 18 THEN 'несовершеннолетний' END as `maturity` FROM users";
+        if ($sortByInc) {
+            $query .= " order by age ASC";
+        } else {
+            $query .= " order by age DESC";
+        }
         $res = $db->fetchAll($query, __METHOD__);
         if ($res) {
-            echo 'ok';
             return $res;
         }
         return false;
     }
 
+
     public function checkUser($data)
     {
-        $q = "SELECT id FROM users WHERE email = :email";
-        $p = ['email' => $data];
+        debug($data);
+        $q = "SELECT id FROM users WHERE email = :email and password = :pass";
+        $p = ['email'=>$data['email'], 'pass' => $data['password']];
         $db = Context::i()->getDb();
         $res = $db->fetchOne($q, __METHOD__, $p);
         if ($res) {
@@ -81,7 +96,7 @@ class User
         $this->_name = $data['name'] ?? '';
         $this->_password = $this->passwordHash($data['password']) ?? '';
         $this->_email = $data['email'] ?? '';
-        $this->_age = intval($data['age']) ?? '';
+       //$this->_age = intval($data['age']) ?? '';
     }
 
     public function checkRegistrationForm(&$error = '')

@@ -1,0 +1,8 @@
+<?php
+/** @var App\Model\User[] $users */
+$users =  $this->alluser;
+?>
+
+<?foreach ($users as $user): ?>
+<div>'Имя: '<?=$user['name']?>  возраст: <?=$user['age']?> <?=$user['maturity']?></div>
+<?endforeach;?>
